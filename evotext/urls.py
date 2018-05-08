@@ -24,5 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name="index.html")),
-    path('evolve/', TemplateView.as_view(template_name="evolve.html")),
+
+    path('text/', include('text.urls')),
+    path('evospace/', include('evospace.urls')),
 ]

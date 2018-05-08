@@ -8,7 +8,7 @@
       <h4 class="lead">Which content is more effective?</h4>
 </div>
 
- <div class="container">
+
       <div class="card-deck mb-3 ">
         <div class="card mb-4 box-shadow">
 
@@ -56,49 +56,63 @@
         </div>
       </div>
 
-      <footer class="pt-4 my-md-5 pt-md-5 border-top">
-        <div class="row">
-          <div class="col-12 col-md">
-            <img class="mb-2" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
-            <small class="d-block mb-3 text-muted">&copy; 2017-2018</small>
-          </div>
-          <div class="col-6 col-md">
-            <h5>Features</h5>
-            <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="#">Cool stuff</a></li>
-              <li><a class="text-muted" href="#">Random feature</a></li>
-              <li><a class="text-muted" href="#">Team feature</a></li>
-              <li><a class="text-muted" href="#">Stuff for developers</a></li>
-              <li><a class="text-muted" href="#">Another one</a></li>
-              <li><a class="text-muted" href="#">Last time</a></li>
-            </ul>
-          </div>
-          <div class="col-6 col-md">
-            <h5>Resources</h5>
-            <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="#">Resource</a></li>
-              <li><a class="text-muted" href="#">Resource name</a></li>
-              <li><a class="text-muted" href="#">Another resource</a></li>
-              <li><a class="text-muted" href="#">Final resource</a></li>
-            </ul>
-          </div>
-          <div class="col-6 col-md">
-            <h5>About</h5>
-            <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="#">Team</a></li>
-              <li><a class="text-muted" href="#">Locations</a></li>
-              <li><a class="text-muted" href="#">Privacy</a></li>
-              <li><a class="text-muted" href="#">Terms</a></li>
-            </ul>
-          </div>
-        </div>
-      </footer>
-    </div>
+             <div id='activities' class="card-group">
+
+           </div>
+
+
 
 {% endblock content %}
 
 
 {% block scripts %}
 
+ <script id="activities_template" type="x-tmpl-mustache">
+    <div class="card">
+        [[#image_url]]
+            <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
+        [[/image_url]]
+    <div class="card-block">
+    <h6 class="card-title"> <i class="fa fa-[[icon]] text-muted"> </i> <a href="[[uri]]">[[title]]</a>   </h6>
+    <p class="card-text"> [[description]]</p>
+              [[#tags]]
+              [[#.]]
+              <span class="label label-primary"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
+              [[/.]]
+              [[^.]]
+              [[/.]]
+    [[/tags]]
+</div>
+</script>
+
+
+ <script type="text/javascript" charset="utf-8">
+     $(document).ready(function() {
+     Mustache.tags = ['[[', ']]'];
+
+     var activities_template = $('#activities_template').html();
+
+     Mustache.parse(activities_template);
+
+     rendered = Mustache.render(activities_template, {
+                    title: 'titulo',
+                    uri: "uri",
+                    icon: "icon",
+                    description: "Test",
+                    lang:"Test",
+                    level:"Test",
+                    type:"Test",
+                    tags:"Test",
+                    has_tags:(1 > 0),
+                    image_url: ""
+                });
+
+                $("#activities").append(rendered);
+
+
+
+
+    });
+ </script>
 
 {% endblock scripts %}
