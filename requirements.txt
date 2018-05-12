@@ -1,7 +1,5 @@
 certifi==2018.4.16
 chardet==3.0.4
-cocoex==2.1
-cocopp==2.1
 defusedxml==0.5.0
 Django==2.0.5
 django-allauth==0.35.0

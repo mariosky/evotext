@@ -33,7 +33,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
 
 ALLOWED_HOSTS = []
 
@@ -94,10 +94,17 @@ WSGI_APPLICATION = 'evotext.wsgi.application'
 
 REDIS_URL = env.str('REDIS_URL')
 
-DATABASES = {
-    'default': env.db(), # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
-}
+if env('GOOGLE_CLOUD'):
+
+    DATABASES = {
+        'default': env.db(), # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
+        'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
+    }
+else:
+    DATABASES = {
+        'default': env.db(),  # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
+        'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
+    }
 
 
 
