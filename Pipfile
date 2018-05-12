@@ -1,2 +1,10 @@
 [requires]
 python_full_version = "3.6.4"
+
+[packages]
+django = "*"
+django-allauth = "*"
+"psycopg2-binary" = "*"
+gunicorn = "*"
+redis = "*"
+django-environ = "*"
