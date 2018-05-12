@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 import environ
+import django_heroku
 root = environ.Path(__file__) - 3 # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False),) # set default values and casting
 environ.Env.read_env() # reading .env file
@@ -178,3 +179,5 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 
+# Activate Django-Heroku.
+django_heroku.settings(locals())
