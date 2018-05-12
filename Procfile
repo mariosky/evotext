@@ -1,0 +1,1 @@
+web: gunicorn evotext.wsgi --access-logfile -

@@ -92,8 +92,7 @@ WSGI_APPLICATION = 'evotext.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-
-
+REDIS_URL = env.str('REDIS_URL')
 
 DATABASES = {
     'default': env.db(), # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ

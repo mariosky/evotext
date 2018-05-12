@@ -5,7 +5,6 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('evolve', TemplateView.as_view(template_name="evolve.html")),
-
+    path('evolve', views.evolve, name="evolve"),
 ]
 

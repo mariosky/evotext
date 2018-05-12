@@ -8,111 +8,108 @@
       <h4 class="lead">Which content is more effective?</h4>
 </div>
 
+<form id="bestForm" action="/text/evolve" method="post">
+    {% csrf_token %}
+    <input name="selection_list" hidden>
 
       <div class="card-deck mb-3 ">
-        <div class="card mb-4 box-shadow">
 
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">
-                With supporting text below as a natural lead-in to additional content.
-                With supporting text below as a natural lead-in to additional content.With supporting text below as
-                a natural lead-in to additional content.
-                With supporting text below as a natural lead-in to additional content.
+        {% for content in content_list %}
 
-            </p>
-            <button type="button" class="btn btn-block btn-outline-primary">Best</button>
-          </div>
-        </div>
-        <div class="card mb-4 box-shadow">
-           <img class="card-img-top" src="https://s3.amazonaws.com/mariogarcia/images/book-1659717_1280.jpg" alt="Card image cap">
+            {% if content.type == 0 %}
+                <div class="card mb-4 box-shadow">
 
-          <div class="card-body">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ content.title }}</h5>
+                    <p class="card-text">
+                        {{ content.text }}
 
-            <p class="card-text">
-                Text With image.
-                With supporting text below as a natural lead-in to additional content.
-                With supporting text below as a natural lead-in to additional content.
-            </p>
+                    </p>
+                    <button id="{{ content.id }}" type="button" class="btn btn-block btn-outline-primary sendButton">Best</button>
+                  </div>
+               </div>
 
-            <button type="button" class="btn btn-block btn-outline-primary">Best</button>
-          </div>
-        </div>
-        <div class="card mb-4 box-shadow">
-          <div class="card-header">
-            <h4 class="my-0 font-weight-normal text-center">With Header</h4>
-          </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">$9 <small class="text-muted">/ ea.</small></h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>More Styles</li>
-              <li>Images </li>
-              <li>Fonts</li>
-              <li>Videos</li>
-            </ul>
-            <button type="button" class="btn btn-block btn-outline-primary">Best</button>
+            {% elif content.type == 1 %}
 
-          </div>
-        </div>
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src="{{ content.image }}" alt="Card image cap">
+
+                  <div class="card-body">
+
+                    <p class="card-text">
+                        {{ content.text }}
+                    </p>
+
+                    <button id="{{ content.id }}" type="button" class="btn btn-block btn-outline-primary sendButton">Best</button>
+                  </div>
+              </div>
+
+            {% elif content.type == 2 %}
+
+                <div class="card mb-4 box-shadow">
+                  <div class="card-header">
+                    <h4 class="my-0 font-weight-normal text-center">{{ content.title }}</h4>
+                  </div>
+                  <div class="card-body">
+                    <p>
+                     {{ content.text }}
+                    </p>
+                    <button id="{{ content.id }}" type="button" class="btn btn-block btn-outline-primary sendButton">Best</button>
+                  </div>
+                </div>
+
+            {% endif %}
+
+      {% endfor %}
+
       </div>
 
-             <div id='activities' class="card-group">
-
-           </div>
-
-
+</form>
 
 {% endblock content %}
 
 
 {% block scripts %}
 
- <script id="activities_template" type="x-tmpl-mustache">
-    <div class="card">
-        [[#image_url]]
-            <img class="card-img-top center-block img-fluid" src="[[image_url]]" alt="[[title]]">
-        [[/image_url]]
-    <div class="card-block">
-    <h6 class="card-title"> <i class="fa fa-[[icon]] text-muted"> </i> <a href="[[uri]]">[[title]]</a>   </h6>
-    <p class="card-text"> [[description]]</p>
-              [[#tags]]
-              [[#.]]
-              <span class="label label-primary"><a href="/search/?tag=[[.]]" style="color:#FFFFFF">#[[.]]</a></span>
-              [[/.]]
-              [[^.]]
-              [[/.]]
-    [[/tags]]
-</div>
-</script>
+
+    <script>
+
+    var sample = {{ sample|safe }};
 
 
- <script type="text/javascript" charset="utf-8">
-     $(document).ready(function() {
-     Mustache.tags = ['[[', ']]'];
+    $(document).ready(function() {
 
-     var activities_template = $('#activities_template').html();
+         $(".sendButton").on("click", function (){
 
-     Mustache.parse(activities_template);
+            var timestamp = Date.now();
+            var username = $("#username").val();
 
-     rendered = Mustache.render(activities_template, {
-                    title: 'titulo',
-                    uri: "uri",
-                    icon: "icon",
-                    description: "Test",
-                    lang:"Test",
-                    level:"Test",
-                    type:"Test",
-                    tags:"Test",
-                    has_tags:(1 > 0),
-                    image_url: ""
-                });
+            username = username == undefined? 'anonymous' : username;
 
-                $("#activities").append(rendered);
+            var best =  $(this).prop('id');
+
+            var eval_data = (individual, best, context) =>
+                    { return individual == best ? individual+":like:"+context : individual; };
+
+            var result = (sample.sample.map(s => s.id).map( data =>  eval_data(data,best,timestamp+':'+username)))
+
+            var $input = $("#bestForm").find("input[name=selection_list]");
+
+            $input.val(result);
 
 
+         $( "#bestForm" ).submit();
+
+
+
+
+     });
 
 
     });
- </script>
+
+    </script>
+
+
 
 {% endblock scripts %}
