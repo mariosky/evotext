@@ -95,14 +95,8 @@ WSGI_APPLICATION = 'evotext.wsgi.application'
 
 REDIS_URL = env.str('REDIS_URL')
 
-if env('GOOGLE_CLOUD'):
 
-    DATABASES = {
-        'default': env.db(), # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-        'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
-    }
-else:
-    DATABASES = {
+DATABASES = {
         'default': env.db(),  # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
         'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
     }
@@ -180,4 +174,4 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+django_heroku.settings(default=env.db())
