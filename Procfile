@@ -1,1 +1,1 @@
-web: gunicorn evotext.wsgi
+web: gunicorn evotex:app
