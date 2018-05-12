@@ -1,1 +1,1 @@
-web: gunicorn evotex.wsgi
+web: gunicorn evotex.wsgi --log-file -
