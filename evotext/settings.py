@@ -35,7 +35,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = tuple(env.list('ALLOWED_HOSTS', default=[]))
 
 
 # Application definition
@@ -101,6 +101,9 @@ DATABASES = {
     }
 
 # Activate Django-Heroku.
+if os.environ.has_key('DATABASE_URL'):
+    DATABASES['default'] =  dj_database_url.config(default=os.environ['DATABASE_URL'])
+
 
 
 
