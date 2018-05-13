@@ -100,9 +100,6 @@ DATABASES = {
         'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
     }
 
-# Activate Django-Heroku.
-if os.environ.has_key('DATABASE_URL'):
-    DATABASES['default'] =  dj_database_url.config(default=os.environ['DATABASE_URL'])
 
 
 
