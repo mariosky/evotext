@@ -14,21 +14,41 @@ def index(request):
 
 
 @require_http_methods(["GET", "POST"])
-def evolve(request):
+def evolve(request, pop):
     if request.method == 'POST':
         print (request.POST)
         if 'selection_list' in request.POST:
             update_fitness(request.POST['selection_list'])
 
     # Get sample from the population
-    # TODO: Multiple populations
-    sample = evospacetext.get_sample('pop', 3)
+    sample = evospacetext.get_sample(pop, 3)
     # Get the population's template
-    template = evospacetext.get_template('pop')
+    template = evospacetext.get_template(pop)
     content_list = get_content_list(sample, template)
-    context = {'content_list':content_list, 'sample': json.dumps(sample)}
+    context = {'content_list':content_list, 'sample': json.dumps(sample), 'population':pop}
     print(context)
     return render(request, 'evolve.html', context)
+
+@require_http_methods(["GET"])
+def dashboard(request, pop):
+    sample = evospacetext.get_all_info_list(pop)
+    context = {'content_list': sample, 'population': pop}
+    return render(request, 'dashboard.html', context)
+
+@require_http_methods(["GET"])
+def details(request, individual):
+
+    template = evospacetext.get_template(individual.split(':')[0])
+
+    print(individual)
+    ind = evospacetext.get_individual(individual)
+    content = get_content(ind, template)
+    likes = evospacetext.get_likes(individual)
+    views = evospacetext.get_views(individual)
+    context = {'content': content, 'template':template, 'likes':likes, 'views':views}
+    return render(request, 'content.html', context)
+
+
 
 
 def get_content_list(sample, template):

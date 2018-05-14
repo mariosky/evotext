@@ -57,7 +57,6 @@ class Population:
         #Esta es una propiedad del EvoSpaceServer NO de la poblacion
         self.is_active = False
 
-##NOOO Aqui
     def deactivate(self):
         self.is_active = False
 
@@ -72,7 +71,12 @@ class Population:
         return r.scard(self.name)
 
     def initialize(self):
-        r.flushall()
+        # Delete all keys with pattern
+        #r.flushall()
+
+        for key in  r.keys(self.name+':*'):
+            r.delete(key)
+        r.delete(self.name)
         r.setnx(self.sample_counter,0)
         r.setnx(self.individual_counter,0)
         r.setnx(self.returned_counter,0)
@@ -107,14 +111,26 @@ class Population:
             sample = [s for s in sample if s]
             if not sample:
                 return None
-        #r.sadd(self.name+":sample:%s" % sample_id, *sample)
-        #r.rpush(self.sample_queue, self.name+":sample:%s" % sample_id)
         try:
             result =  {'sample_id': self.name+":sample:%s" % sample_id ,
                    'sample':   [Individual(id=key).get(as_dict=True) for key in sample ]}
         except:
             return None
         return result
+
+    def get_all(self):
+        sample = r.smembers(self.name)
+        if None in sample:
+            sample = [s for s in sample if s]
+            if not sample:
+                return None
+        try:
+            result =  {'sample_id': 0 ,
+                       'sample':   [Individual(id=key).get(as_dict=True) for key in sample ]}
+        except:
+            return None
+        return result
+
 
     def read_sample_queue(self):
         result = r.lrange(self.sample_queue,0,-1)
@@ -186,6 +202,6 @@ class Population:
 
 
 if __name__ == "__main__":
-    population = Population('pop')
+    population = Population('pop2')
     population.initialize()
 

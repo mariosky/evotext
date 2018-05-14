@@ -5,6 +5,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('evolve', views.evolve, name="evolve"),
+    path('<slug:pop>/', views.evolve, name="evolve"),
+    path('dashboard/<slug:pop>/', views.dashboard, name="dashboard"),
+    path('id/<str:individual>', views.details, name="details"),
 ]
 

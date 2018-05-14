@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+
+       <div class="row">
+
+       <div class="col-sm-4">
+               {% if content.type == 0 %}
+                    <div class="card mb-4 box-shadow">
+
+                      <div class="card-body">
+                        <h5 class="card-title">{{ content.title }}</h5>
+                        <p class="card-text">
+                            {{ content.text }}
+
+                        </p>
+                      </div>
+                   </div>
+                {% elif content.type == 1 %}
+                  <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="{{ content.image }}" alt="Card image cap">
+
+                      <div class="card-body">
+
+                        <p class="card-text">
+                            {{ content.text }}
+                        </p>
+
+                      </div>
+                  </div>
+                {% elif content.type == 2 %}
+                    <div class="card mb-4 box-shadow">
+                      <div class="card-header">
+                        <h4 class="my-0 font-weight-normal text-center">{{ content.title }}</h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                         {{ content.text }}
+                        </p>
+                      </div>
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+
+       <div class="col-sm-8">
+           <div class="card">
+              <div class="card-header">
+                Template
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{ template }}</p>
+                <a href="#" class="btn btn-primary">Edit</a>
+              </div>
+            </div>
+
+
+       </div>
+</div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+    <script>
+
+
+    </script>
+
+
+
+{% endblock scripts %}

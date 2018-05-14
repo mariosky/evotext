@@ -1,0 +1,41 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Views</th>
+              <th scope="col">Likes</th>
+            </tr>
+          </thead>
+
+          <tbody>
+           {% for content in content_list %}
+            <tr>
+              <th scope="row">  <a href="/evolve/id/{{  content.id }}">{{ content.id }}</a></th>
+              <td>{{ content.views }}</td>
+              <td>{{ content.likes }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+    <script>
+
+
+    </script>
+
+
+
+{% endblock scripts %}

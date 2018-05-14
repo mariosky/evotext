@@ -8,7 +8,7 @@
       <h4 class="lead">Which content is more effective?</h4>
 </div>
 
-<form id="bestForm" action="/text/evolve" method="post">
+<form id="bestForm" action="/evolve/{{ population }}/" method="post">
     {% csrf_token %}
     <input name="selection_list" hidden>
 
