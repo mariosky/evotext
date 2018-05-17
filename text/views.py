@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import json
 
 
@@ -29,11 +29,28 @@ def evolve(request, pop):
     print(context)
     return render(request, 'evolve.html', context)
 
+
+
+
 @require_http_methods(["GET"])
 def dashboard(request, pop):
     sample = evospacetext.get_all_info_list(pop)
     context = {'content_list': sample, 'population': pop}
     return render(request, 'dashboard.html', context)
+
+#This should be a POST
+@require_http_methods(["GET", "POST"])
+def next(request, pop):
+    evospacetext.evolve_Tournament(pop)
+    return redirect('dashboard', pop=pop)
+
+#This should be a POST
+@require_http_methods(["GET", "POST"])
+def new(request, pop):
+    evospacetext.initialize_population(pop)
+    return redirect('dashboard', pop=pop)
+
+
 
 @require_http_methods(["GET"])
 def details(request, individual):
