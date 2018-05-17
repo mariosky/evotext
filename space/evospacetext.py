@@ -183,7 +183,6 @@ def calc_fitness(pop):
         ind['likes']= likes
         ind['views'] = views
         ind['score'] = likes
-        print(ind)
 
 
 
@@ -205,25 +204,21 @@ def evolve_Tournament(pop,sample_size=8, mutation_rate=0.5, min_views = 5, tourn
         #If not, put back sample unchanged
         putback_sample(_sample, pop)
         return
-    print("Good to Go",_sample )
+
 
     # sort
     # TODO: A better way to score, for now is only the one with more likes
     _sample['sample'].sort(key=lambda i: i['score'], reverse=True)
-    print("Good to Go", _sample['sample'])
 
     newChilds = []
     for i in range(0,tournament_size//4,2):
         children = crossover_single_point(_sample['sample'][i], _sample['sample'][i+1])
-        print(children)
         newChilds.extend(children)
 
 
     for i in range(len(newChilds)):
         _sample['sample'].pop()
     _sample['sample'].extend(newChilds)
-    print([a['score'] for a in _sample['sample']])
-
     putback_sample(_sample, pop)
 
 
