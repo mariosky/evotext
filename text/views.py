@@ -40,12 +40,20 @@ def details(request, individual):
 
     template = evospacetext.get_template(individual.split(':')[0])
 
-    print(individual)
     ind = evospacetext.get_individual(individual)
     content = get_content(ind, template)
     likes = evospacetext.get_likes(individual)
     views = evospacetext.get_views(individual)
-    context = {'content': content, 'template':template, 'likes':likes, 'views':views}
+    chromosome = ", ".join( list(map(str, ind["chromosome"])))
+
+
+    context = {'content': content, 'template':template, 'likes':likes, 'views':views, 'ind':ind, 'chromosome':"["+chromosome+"]"}
+    if 'parent1' in ind:
+        p1 = evospacetext.get_individual(ind['parent1'])
+        context['parent1'] = get_content(p1, template)
+    if 'parent2' in ind:
+        p2 = evospacetext.get_individual(ind['parent2'])
+        context['parent2'] = get_content(p2, template)
     return render(request, 'content.html', context)
 
 

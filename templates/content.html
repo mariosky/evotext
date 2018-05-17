@@ -3,10 +3,12 @@
 
 
 {% block content %}
-
-       <div class="row">
+<h4> {{ content.id }}</h4>
+<div class="row">
 
        <div class="col-sm-4">
+
+
                {% if content.type == 0 %}
                     <div class="card mb-4 box-shadow">
 
@@ -14,8 +16,9 @@
                         <h5 class="card-title">{{ content.title }}</h5>
                         <p class="card-text">
                             {{ content.text }}
-
                         </p>
+                        <h6> Id: {{ content.id }}</h6>
+                        <h6> Chromosome: {{ chromosome }}</h6>
                       </div>
                    </div>
                 {% elif content.type == 1 %}
@@ -27,7 +30,7 @@
                         <p class="card-text">
                             {{ content.text }}
                         </p>
-
+                          <h6> Chromosome: {{ chromosome }}</h6>
                       </div>
                   </div>
                 {% elif content.type == 2 %}
@@ -39,27 +42,119 @@
                         <p>
                          {{ content.text }}
                         </p>
+                         <h6> Chromosome: {{ chromosome }}</h6>
                       </div>
                     </div>
                 {% endif %}
 
             </div>
 
+<div class="col-sm-4">
+               {% if parent1.type == 0 %}
+                    <div class="card mb-4 box-shadow">
+
+                      <div class="card-body">
+                        <h5 class="card-title">{{ parent1.title }}</h5>
+                        <p class="card-text">
+                            {{ parent1.text }}
+                        </p>
+                             Parent 1:<a class="btn btn-link" href="/evolve/id/{{ parent1.id }}" role="button"> {{ parent1.id }} </a>
+                      </div>
+                   </div>
+                {% elif parent1.type == 1 %}
+                  <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="{{ parent1.image }}" alt="Card image cap">
+
+                      <div class="card-body">
+
+                        <p class="card-text">
+                            {{ parent1.text }}
+                        </p>
+                       Parent 1:<a class="btn btn-link" href="/evolve/id/{{ parent1.id }}" role="button"> {{ parent1.id }} </a>
+                         </div>
+                  </div>
+                {% elif parent1.type == 2 %}
+                    <div class="card mb-4 box-shadow">
+                      <div class="card-header">
+                        <h4 class="my-0 font-weight-normal text-center">{{ parent1.title }}</h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                         {{ parent1.text }}
+                        </p>
+                      Parent 1:<a class="btn btn-link" href="/evolve/id/{{ parent1.id }}" role="button"> {{ parent1.id }} </a>
+
+                      </div>
+                    </div>
+                {% endif %}
+        </div>
+    <div class="col-sm-4">
+       {% if parent2.type == 0 %}
+                    <div class="card mb-4 box-shadow">
+
+                      <div class="card-body">
+                        <h5 class="card-title">{{ parent2.title }}</h5>
+                        <p class="card-text">
+                            {{ parent2.text }}
+                        </p>
+                        Parent 2:<a class="btn btn-link" href="/evolve/id/{{ parent2.id }}" role="button"> {{ parent2.id }} </a>
+
+                      </div>
+                   </div>
+                {% elif parent2.type == 1 %}
+                  <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="{{ parent2.image }}" alt="Card image cap">
+
+                      <div class="card-body">
+
+                        <p class="card-text">
+                            {{ parent2.text }}
+                        </p>
+                        Parent 2:<a class="btn btn-link" href="/evolve/id/{{ parent2.id }}" role="button"> {{ parent2.id }} </a>
+                      </div>
+                  </div>
+                {% elif parent2.type == 2 %}
+                    <div class="card mb-4 box-shadow">
+                      <div class="card-header">
+                        <h4 class="my-0 font-weight-normal text-center">{{ parent2.title }}</h4>
+                      </div>
+                      <div class="card-body">
+                        <p>
+                         {{ parent2.text }}
+                        </p>
+
+                        Parent 2:<a class="btn btn-link" href="/evolve/id/{{ parent2.id }}" role="button"> {{ parent2.id }} </a>
+
+                      </div>
+                    </div>
+                {% endif %}
 
 
-       <div class="col-sm-8">
+      </div>
+
+
+</div>
+
+
+
+<div class="row">
+                <div class="col-sm-8">
            <div class="card">
               <div class="card-header">
                 Template
               </div>
               <div class="card-body">
                 <p class="card-text">{{ template }}</p>
+                <p>
+
+                </p>
                 <a href="#" class="btn btn-primary">Edit</a>
               </div>
             </div>
 
 
        </div>
+
 </div>
 
 {% endblock content %}

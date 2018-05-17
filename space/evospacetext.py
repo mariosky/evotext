@@ -54,7 +54,7 @@ def take_sample(population, size):
     return r
 
 
-def put_back_sample(json_data, population):
+def putback_sample(json_data, population):
     sample = None
     evospace = Population(population)
     if not isinstance(json_data, dict):
@@ -62,7 +62,7 @@ def put_back_sample(json_data, population):
     else:
         sample = {'sample': json_data['sample'], 'sample_id': json_data['sample_id']}
 
-    evospace.put_back_sample(sample)
+    evospace.putback_sample(sample)
 
 
 
@@ -152,30 +152,80 @@ def initialize_population(population_name = 'pop', size = 10, template = None ):
         evospace.put_individual(**individual)
 
 
+def crossover_single_point(parent1, parent2):
+    """ Does the crossover migration. """
+
+    size = min(len(parent1), len(parent2))
+    cut = randint(0, size) + size % 2
+    chromosome1 = parent1['chromosome'][:cut] + parent2['chromosome'][cut:]
+    chromosome2 = parent2['chromosome'][:cut] + parent1['chromosome'][cut:]
+
+    child1 = {'id': None, 'fitness': {"DefaultContext": 0.0},
+              'score':0,
+              'chromosome': chromosome1,
+              'parent1': parent1["id"], 'parent2': parent2["id"],
+              'crossover': "single_point"}
+
+    child2 = {'id': None,
+              'fitness': {"DefaultContext": 0.0},
+              'score':0,
+              'chromosome': chromosome2,
+              'parent1': parent1["id"],
+              'parent2': parent2["id"],
+              'crossover': "single_point"}
+
+    return [child1, child2]
+
+def calc_fitness(pop):
+    for ind in pop["sample"]:
+        likes = get_likes(ind['id'])
+        views = get_views(ind['id'])
+        ind['likes']= likes
+        ind['views'] = views
+        ind['score'] = likes
+        print(ind)
 
 
 
-def evolve_Tournament(pop,sample_size=6, mutation_rate=0.5, min_views = 5, tournament_size = 4 ):
-
+def evolve_Tournament(pop,sample_size=8, mutation_rate=0.5, min_views = 5, tournament_size = 4 ):
     #get two samples from evospace
     _sample = take_sample(pop, sample_size)
-
-    print(_sample)
-
     #if None evospace is probably empty, just return
     if not _sample:
         return
+    # Tournament must be a pair
+    if tournament_size % 2:
+        return
 
-    info = get_info_dict(_sample)
+    calc_fitness(_sample)
     # They must have a minimum of 5 views to breed
-    good_to_breed = [d for d in info if info[d]['views'] >= min_views]
 
     # At least the tournament_size
-    if len(good_to_breed) < tournament_size:
+    if len([i for i in _sample['sample'] if i['views']>=min_views]) < tournament_size:
         #If not, put back sample unchanged
         putback_sample(_sample, pop)
+        return
+    print("Good to Go",_sample )
 
-    print(good_to_breed)
+    # sort
+    # TODO: A better way to score, for now is only the one with more likes
+    _sample['sample'].sort(key=lambda i: i['score'], reverse=True)
+    print("Good to Go", _sample['sample'])
+
+    newChilds = []
+    for i in range(0,tournament_size//4,2):
+        children = crossover_single_point(_sample['sample'][i], _sample['sample'][i+1])
+        print(children)
+        newChilds.extend(children)
+
+
+    for i in range(len(newChilds)):
+        _sample['sample'].pop()
+    _sample['sample'].extend(newChilds)
+    print([a['score'] for a in _sample['sample']])
+
+    putback_sample(_sample, pop)
+
 
 
 
@@ -185,7 +235,7 @@ def evolve_Tournament(pop,sample_size=6, mutation_rate=0.5, min_views = 5, tourn
 
 
 if __name__ == "__main__":
-    initialize_population('pop', 8)
-    #evolve_Tournament('pop')
+    #initialize_population('pop', 8)
+    evolve_Tournament('pop')
     #print(get_all_info('pop3'))
     #one_like("pop:individual:3", "mario", 1234224)
