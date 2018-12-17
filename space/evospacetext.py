@@ -81,10 +81,10 @@ def get_template(population):
                 ],
 
             'titles': ["A title", "Another title", "Yet another title"],
-            'images': ["https://s3.amazonaws.com/mariogarcia/images/book-1659717_1280.jpg",
-                       "https://s3.amazonaws.com/mariogarcia/images/computer-1209641_960_720.jpg",
-                       "https://s3.amazonaws.com/mariogarcia/images/hacker-1569744_640.jpg",
-                       "https://s3.amazonaws.com/mariogarcia/images/math-1547018_1280.jpg"
+            'images': ["https://evo.sfo2.digitaloceanspaces.com/mariogarcia/images/book-1659717_1280.jpg",
+                       "https://evo.sfo2.digitaloceanspaces.com/images/computer-1209641_960_720.jpg",
+                       "https://evo.sfo2.digitaloceanspaces.com/images/hacker-1569744_640.jpg",
+                       "https://evo.sfo2.digitaloceanspaces.com/mariogarcia/images/math-1547018_1280.jpg"
                        ],
             'number_of_styles': 3,
             'names': ['salutation', 'name', 'action']
